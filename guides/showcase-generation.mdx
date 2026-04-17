@@ -1,0 +1,214 @@
+---
+title: "Generate high-end showcase images in Phase 4"
+description: "Step-by-step walkthrough of exporting your SVG to PNG, running the showcase script, understanding all CLI flags, and choosing the right background style for your product."
+---
+
+Phase 4 takes your finalized SVG and produces professional showcase images using Gemini's image generation model (Nano Banana). Each image places your logo at the visual center of a carefully constructed background — film grain texture, atmospheric lighting, precise micro-typography — and outputs at 16:9 2K resolution. This page documents every step, script parameter, and configuration option involved.
+
+<Warning>
+  The `generate_showcase.py` script requires a valid `GEMINI_API_KEY` set in your `.env` file. Without it, the script exits immediately. Copy `.env.example` to `.env` and add your key before running any showcase commands.
+
+  ```bash
+  cp .env.example .env
+  # Open .env and set GEMINI_API_KEY=your_key_here
+  ```
+</Warning>
+
+<Steps>
+  <Step title="Export your SVG to PNG">
+    The showcase script takes a PNG as its reference image, not an SVG directly. Use `scripts/svg_to_png.py` to convert your selected variant.
+
+    <CodeGroup>
+
+    ```bash Default 1024×1024 export
+    python scripts/svg_to_png.py logo.svg
+    # Outputs: logo.png at 1024×1024px with transparent background
+    ```
+
+    ```bash Custom size
+    python scripts/svg_to_png.py logo.svg --width 2048 --height 2048 --output logo-2x.png
+    ```
+
+    ```bash Explicit output path
+    python scripts/svg_to_png.py logo.svg --output exports/dataflow-logo.png
+    ```
+
+    </CodeGroup>
+
+    **`svg_to_png.py` arguments:**
+
+    | Argument | Default | Description |
+    |---|---|---|
+    | `svg_file` | required | Path to the SVG file to convert |
+    | `--output`, `-o` | Same filename, `.png` extension | Output path for the PNG file |
+    | `--width`, `-w` | `1024` | Output width in pixels |
+    | `--height`, `-H` | `1024` | Output height in pixels |
+
+    The script uses `cairosvg` under the hood. If conversion fails with an import error, install it first:
+
+    ```bash
+    pip install cairosvg
+    ```
+
+    The output PNG has a transparent background so the showcase script can composite it cleanly onto any background style.
+  </Step>
+
+  <Step title="Choose your background styles">
+    Before generating, review the 12 available styles in `references/background_styles.md` and choose which ones to generate. Claude recommends four styles in context during Phase 4, but you can override this and generate any combination.
+
+    <Tip>
+      Dark styles work best for tech-forward, data-heavy, or infrastructure products where a dramatic backdrop reinforces the product's power. Light styles work better for consumer-facing products, editorial presentations, or anything where approachability and clarity matter more than atmosphere.
+
+      **Dark style pairings:**
+      - Security / infrastructure: `void`, `frosted`
+      - AI / dynamic systems: `fluid`, `led_matrix`
+      - Creative / artistic brands: `analog_liquid`
+      - Editorial / magazine: `spotlight`
+
+      **Light style pairings:**
+      - SaaS / digital products: `ui_container`, `clinical`
+      - Accessible AI / consumer: `morning`
+      - Tech hardware: `iridescent`
+      - Humanistic / editorial: `editorial`
+      - Established / classic brands: `swiss_flat`
+    </Tip>
+
+    The 12 style keys to use with `--style`:
+
+    | Key | Name | Character |
+    |---|---|---|
+    | `void` | The Void | Absolute black, hardcore tech |
+    | `frosted` | Frosted Horizon | Titanium gray, premium breathing space |
+    | `fluid` | Fluid Abyss | Deep purple, AI-native fluidity |
+    | `spotlight` | Studio Spotlight | Carbon gray, editorial lighting |
+    | `analog_liquid` | Analog Liquid | Metallic shimmer on vivid solid color |
+    | `led_matrix` | LED Matrix | Glowing dot matrix, cyberpunk |
+    | `editorial` | Editorial Paper | Off-white paper texture, humanistic |
+    | `iridescent` | Iridescent Frost | Frosted glass, holographic hints |
+    | `morning` | Morning Aura | Warm ivory, pastel mist |
+    | `clinical` | Clinical Studio | Pure white, geometric shadows |
+    | `ui_container` | UI Container | Frosted glass container, SaaS-native |
+    | `swiss_flat` | Swiss Flat | Pure solid color, zero effects |
+  </Step>
+
+  <Step title="Run generate_showcase.py">
+    The script accepts your PNG reference image and generates showcase images by sending it to the Gemini API alongside a detailed background-construction prompt.
+
+    <CodeGroup>
+
+    ```bash Single style
+    python scripts/generate_showcase.py "DataFlow" exports/dataflow-logo.png \
+      --style fluid \
+      --description "AI data pipeline tool"
+    # Outputs: output/DataFlow_fluid.png
+    ```
+
+    ```bash Single style, custom output path
+    python scripts/generate_showcase.py "DataFlow" exports/dataflow-logo.png \
+      --style void \
+      --output showcases/dataflow-void.png \
+      --description "AI data pipeline tool"
+    ```
+
+    ```bash All 12 styles
+    python scripts/generate_showcase.py "DataFlow" exports/dataflow-logo.png \
+      --all-styles \
+      --description "AI data pipeline tool"
+    # Outputs: output/DataFlow_{style}.png for each of the 12 styles
+    ```
+
+    </CodeGroup>
+
+    **`generate_showcase.py` arguments:**
+
+    | Argument | Default | Description |
+    |---|---|---|
+    | `logo_name` | required | Name of your product — used in the prompt and output filename |
+    | `reference_image` | required | Path to the PNG exported in step 1 |
+    | `--style` | `iridescent` | One of the 12 style keys; used when `--all-styles` is not set |
+    | `--output`, `-o` | `output/{logo_name}_{style}.png` | Custom path for the output image |
+    | `--description`, `-d` | `""` | Optional product description added as center text in the showcase |
+    | `--all-styles` | `false` | Generate all 12 styles in a single run |
+
+    All output files are written to the `output/` directory by default, which is created automatically if it does not exist.
+  </Step>
+
+  <Step title="Understand the prompt sent to Gemini">
+    The script constructs a detailed prompt for each style. Understanding its structure helps you know what the model is instructed to produce and why results look the way they do.
+
+    The prompt has three sections:
+
+    **Logo processing instructions** — tells Gemini to extract the core graphic from the reference image, strip any background or frame, render it as a flat solid-color vector, and maintain sharp edges. On dark backgrounds the logo is rendered in pure white (`#FFFFFF`); on light backgrounds in pure black (`#000000`).
+
+    **Background construction** — the full style description from `BACKGROUND_STYLES` in the script. For example, the `fluid` style instructs:
+
+    ```
+    FLUID ABYSS (流体深渊)
+    Deep midnight purple or extremely dark Klein blue base. Noise texture with slight color tint,
+    blending with the base to create deep-sea sediment or nebula texture. Fluid fusion light -
+    dark orange on right side, dark blue on left side, slowly interweaving in the dark space center.
+    ```
+
+    **Typography and layout** — instructs the model to use Swiss-style micro-typography at 6–9pt in the corners and bottom center, with your `logo_name` in the top-left, `v. 1.0.0 // 2026` in the top-right, and your `--description` (uppercased) centered at the bottom. The logo graphic is placed at the absolute visual center with generous breathing space.
+
+    The final prompt for a `fluid` style, `DataFlow` product looks like this in structure:
+
+    ```
+    Extract the core graphic from the reference image as a pure flat single-color vector structure...
+
+    LOGO PROCESSING:
+    - Strip background and outer frames
+    - Extract core graphic only, preserve graphic details
+    - Extremely flat: 100% solid color flat vector in pure white (#FFFFFF)
+    - Sharp, clear edges
+
+    BACKGROUND CONSTRUCTION:
+    FLUID ABYSS (流体深渊)
+    Deep midnight purple or extremely dark Klein blue base...
+
+    TYPOGRAPHY AND LAYOUT:
+    Left corner: DATAFLOW
+    Right corner: v. 1.0.0 // 2026
+    Bottom center: AI DATA PIPELINE TOOL
+    ```
+  </Step>
+
+  <Step title="Review the output">
+    Each generated image is a **16:9 aspect ratio at 2K resolution** (`image_size="2K"` via the Gemini `ImageConfig`). This format suits widescreen presentation contexts — landing page hero sections, pitch deck slides, README banners, and social media cards.
+
+    Check the `output/` directory for your files. If a style fails — for example, due to an API rate limit — the script reports the error and continues to the next style when running `--all-styles`. Check your API quota if multiple styles fail in sequence.
+  </Step>
+</Steps>
+
+## Environment configuration
+
+The script reads configuration from your `.env` file. Three variables are recognized:
+
+```env
+# Required
+GEMINI_API_KEY=your_api_key_here
+
+# Optional: override the model name
+GEMINI_MODEL=gemini-3.1-flash-image-preview
+
+# Optional: use a third-party API endpoint compatible with the google-genai SDK
+GEMINI_API_BASE_URL=https://api.example.com/v1
+```
+
+When `GEMINI_API_BASE_URL` is set, the client passes it as the `api_endpoint` in `http_options`. This lets you route requests through a proxy or use a compatible third-party provider without changing any other code.
+
+## The `generate_showcase_image()` function
+
+If you want to call the script programmatically rather than from the CLI, the core function signature is:
+
+```python
+generate_showcase_image(
+    logo_name: str,           # Product name, appears in micro-typography
+    reference_image_path: str, # Path to the exported PNG
+    style: str,               # One of the 12 BACKGROUND_STYLES keys
+    output_path: str,         # Where to save the output PNG
+    product_description: str = ""  # Optional — appears as bottom center text
+) -> bool
+```
+
+The function returns `True` on success and `False` on any failure, including missing API key, unknown style key, unreadable reference image, or API error.

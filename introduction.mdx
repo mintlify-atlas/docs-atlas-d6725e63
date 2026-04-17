@@ -1,0 +1,71 @@
+---
+title: "Logo Generator Skill: What It Is and How It Works Here"
+description: "Learn how this skill turns a product description into SVG logos, interactive HTML previews, and professional showcase images powered by Gemini."
+---
+
+Logo Generator is a Claude Code skill that produces a complete logo system from a short product description. You provide the product name, industry, and a few design preferences; the skill handles the rest — generating six or more distinct SVG variants, an interactive HTML preview page, and high-end showcase images rendered by Gemini image generation across 12 professional background styles.
+
+## What problem it solves
+
+Traditional logo design requires either hiring a designer (slow, expensive) or accepting generic AI-generated output that lacks polish. Logo Generator bridges that gap by encoding proven design principles directly into its workflow: extreme simplicity, generous negative space, precise proportions, and a single clear focal point. Every variant is a deliberate design decision, not a random output.
+
+The result is production-ready: you get editable SVG files, PNG exports at any size, and presentation-quality showcase images that look like they came from a design studio.
+
+## Who it is for
+
+- **Startups** that need a professional logo quickly without a full design engagement
+- **Developers** building side projects who want a credible visual identity
+- **Designers** exploring initial concepts before committing to a direction
+- **Product teams** iterating on brand identity and needing multiple directions to evaluate
+
+## The two AI systems
+
+Logo Generator uses two distinct AI systems with different roles:
+
+**Claude Code (the skill system)** drives the entire workflow. It gathers your requirements, selects appropriate geometric design patterns, generates all SVG code, builds the interactive HTML showcase, and manages the Python scripts that export and deliver your assets. No external API is needed for this part of the workflow.
+
+**Gemini 3.1 Flash Image Preview (Nano Banana)** handles Phase 4 showcase image generation only. It takes your exported PNG logo and renders it against a chosen background style — fluid deep-purple AI aesthetics, studio spotlight lighting, frosted titanium, and so on. A Gemini API key is required only for this phase.
+
+<Note>
+  SVG logo generation, interactive HTML previews, and PNG export all work without a Gemini API key. You only need the key when you are ready to generate high-end showcase images in Phase 4.
+</Note>
+
+## The five-phase workflow
+
+The skill follows a structured five-phase process that keeps you in control at every decision point:
+
+**Phase 1 — Information gathering**: Claude asks for your product name, industry or category, core concept (connection, flow, security, simplicity), and design preferences such as color palette and mood. Questions are concise and come one at a time.
+
+**Phase 2 — Pattern matching and SVG generation**: Claude selects geometric patterns from its design pattern library and generates six or more distinct SVG variants. Each variant uses `viewBox="0 0 100 100"` for perfect scaling at any size. An interactive HTML showcase is created immediately so you can compare all variants side by side.
+
+**Phase 3 — Iteration and refinement**: You select your favorite variants and request adjustments — change spacing, rotation, stroke weight, color, or combine elements from two different variants. Claude makes targeted changes rather than regenerating everything.
+
+**Phase 4 — High-end showcase generation**: Once you have a preferred direction, Claude exports the SVG to a 1024×1024px PNG, selects four background styles suited to your product type, and runs the `generate_showcase.py` script to produce showcase images via the Gemini API.
+
+**Phase 5 — Delivery**: You receive an interactive HTML showcase page, editable SVG files, PNG exports, and four professional showcase images ready to use in presentations, landing pages, or pitch decks.
+
+## Output formats
+
+Every logo project delivers:
+
+- **SVG files** — editable vector format, scales to any resolution without quality loss
+- **PNG exports** — transparent-background raster images at your requested size (default 1024×1024px)
+- **Interactive HTML showcase** — a browser-ready page with hover effects, smooth transitions, and design rationale for each variant
+- **Showcase images** — AI-generated presentation images with your logo placed against a professional background
+
+## Get started
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Install the skill using npx, git clone, or manual copy, then configure your environment.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Walk through a complete example and generate your first logo in minutes.
+  </Card>
+  <Card title="Workflow overview" icon="diagram-project" href="/guides/workflow">
+    Read the full five-phase workflow in detail, including iteration strategies.
+  </Card>
+  <Card title="Background styles" icon="palette" href="/reference/background-styles">
+    Browse all 12 showcase background styles with descriptions and ideal use cases.
+  </Card>
+</CardGroup>

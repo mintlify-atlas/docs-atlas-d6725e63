@@ -1,0 +1,379 @@
+---
+title: "Background styles reference for logo showcase images"
+description: "Full specifications for all 12 background styles available in generate_showcase.py, including visual characteristics, suitable product types, and logo color rules."
+---
+
+When you run `generate_showcase.py`, the script composites your exported logo PNG against one of 12 curated background styles and renders a 16:9, 2K showcase image via the Gemini image generation API. Each style has a specific visual language and is suited to particular product categories. This page documents all 12 styles so you can choose deliberately rather than guessing.
+
+<Note>
+Dark styles render your logo in **pure white (#FFFFFF)**. Light styles render your logo in **pure black (#000000)**. The script applies this automatically based on the style you select — you do not need to prepare separate logo files.
+</Note>
+
+---
+
+## Quick reference
+
+| Key | Display name | Mode | Saturation | Best for |
+|---|---|---|---|---|
+| `void` | The Void | Dark | Minimal (5%) | Hardcore tech, data security, infrastructure |
+| `frosted` | Frosted Horizon | Dark | Low (10%) | Premium products, design-focused brands |
+| `fluid` | Fluid Abyss | Dark | Medium (20%) | AI products, dynamic systems, data visualization |
+| `spotlight` | Studio Spotlight | Dark | None (0%) | Editorial design, magazine-style presentations |
+| `analog_liquid` | Analog Liquid | Dark | High (40–60%) | Creative tools, artistic brands, experimental products |
+| `led_matrix` | LED Matrix | Dark | Medium (25–35%) | AI computing, Web3, data services, electronic hardware |
+| `editorial` | Editorial Paper | Light | Very low (5%) | Humanistic brands, professional services |
+| `iridescent` | Iridescent Frost | Light | Medium (25%) | Tech products, hardware, scientific applications |
+| `morning` | Morning Aura | Light | Low (15%) | User-friendly AI, accessible products |
+| `clinical` | Clinical Studio | Light | Minimal (2%) | Algorithm-driven, data-centric, confident brands |
+| `ui_container` | UI Container | Light | Low–medium (10–20%) | Digital products, apps, SaaS platforms |
+| `swiss_flat` | Swiss Flat | Light | High (rich, deep) | Established brands, environmental products, classic institutions |
+
+---
+
+## Dark styles
+
+Dark styles use a predominantly dark background. Your logo is rendered in pure white for maximum contrast.
+
+<AccordionGroup>
+  <Accordion title="void — The Void (绝对虚空)">
+
+**Concept**: Absolute minimalism and mystery.
+
+**Visual characteristics**:
+- Base: Pure black (#000000)
+- Noise: Extremely fine silver/white high-contrast micro noise
+- Texture: Cold, sharp electronic film grain
+- Atmosphere: Minimal — only a faint icy white or blue glow at the extreme corner, like distant starlight at the edge of the universe
+- Mood: Infinite void, cosmic distance, total restraint
+
+**Suitable for**: Hardcore tech, data security, infrastructure products.
+
+**Saturation**: Extremely low (5%).
+
+**Full prompt description used by the script**:
+
+```
+THE VOID (绝对虚空)
+Absolute black (#000000) background with extremely fine silver/white high-contrast micro noise.
+Cold, sharp electronic film grain texture. Minimal atmosphere light - only a faint, icy white or blue glow
+at the extreme corner, like distant starlight at the edge of the universe.
+```
+
+  </Accordion>
+  <Accordion title="frosted — Frosted Horizon (磨砂穹顶)">
+
+**Concept**: Modern breathing space with physical thickness.
+
+**Visual characteristics**:
+- Base: Deep titanium gray or midnight slate gray — not pure black
+- Noise: Organic film-like dust texture
+- Texture: Unpolished rough metal or stone surface
+- Atmosphere: Large area low-saturation cold gray-blue light halo, edges completely dissolved like mist
+- Mood: Sophisticated, breathable, Apple-like presentation quality
+
+**Suitable for**: Premium products, design-focused brands.
+
+**Saturation**: Low (10%).
+
+**Full prompt description used by the script**:
+
+```
+FROSTED HORIZON (磨砂穹顶)
+Deep titanium gray or midnight slate gray base, not pure black. Organic film-like dust noise texture,
+resembling unpolished rough metal or stone surface. Large area but extremely low saturation cold-toned
+light halo (low-saturation gray-blue), edges completely dissolved like mist.
+```
+
+  </Accordion>
+  <Accordion title="fluid — Fluid Abyss (流体深渊)">
+
+**Concept**: AI-native with data fluidity.
+
+**Visual characteristics**:
+- Base: Deep midnight purple or extremely dark Klein blue
+- Noise: Slight color-tinted noise blending with the base
+- Texture: Deep-sea sediment or nebula quality
+- Atmosphere: Fluid fusion — dark orange on the right, dark blue on the left, slowly interweaving in the dark space center
+- Mood: Mysterious, dynamic, computational
+
+**Suitable for**: AI products, dynamic systems, data visualization.
+
+**Saturation**: Medium (20%).
+
+**Full prompt description used by the script**:
+
+```
+FLUID ABYSS (流体深渊)
+Deep midnight purple or extremely dark Klein blue base. Noise texture with slight color tint,
+blending with the base to create deep-sea sediment or nebula texture. Fluid fusion light -
+dark orange on right side, dark blue on left side, slowly interweaving in the dark space center.
+```
+
+  </Accordion>
+  <Accordion title="spotlight — Studio Spotlight (物理影棚)">
+
+**Concept**: Physical studio lighting simulation.
+
+**Visual characteristics**:
+- Base: Extremely dark warm carbon gray
+- Noise: Slightly larger grain simulating low-light camera photography
+- Texture: Paper print grain in weak light
+- Atmosphere: Single-side softbox or spotlight creating a natural vignette
+- Mood: Editorial magazine quality, professional photography feel
+
+**Suitable for**: Editorial design, magazine-style brand presentations.
+
+**Saturation**: None (0%).
+
+**Full prompt description used by the script**:
+
+```
+STUDIO SPOTLIGHT (物理影棚)
+Extremely dark warm carbon gray base. Slightly larger grain simulating low-light camera photography,
+like paper print grain in weak light. Single-side softbox or spotlight creating natural vignette,
+editorial magazine quality with professional photography feel.
+```
+
+  </Accordion>
+  <Accordion title="analog_liquid — Analog Liquid (物理流体)">
+
+**Concept**: Physical fluid textures with conflict aesthetics.
+
+**Visual characteristics**:
+- Base: Solid color — exactly one of: vibrant orange (#FF6B00), Klein blue (#002FA7), or lime green (#00FF41)
+- Noise: Microscopic cellular patterns or extreme grainy "thermal imaging" roughness
+- Texture: Metallic shimmer overlay — gold dust flow, metallic mica powder, iridescent pigments creating rainbow oil slick effects; dry mineral textures like crushed gemstones; macro photography of copper oxidation, rust patterns, gold leaf fragments
+- Atmosphere: Extreme contrast between chaotic organic texture and ultra-clean sharp vector logo
+- Mood: Chemical reaction, artistic creativity, inspiration
+
+**Suitable for**: Creative tools, artistic brands, experimental products.
+
+**Saturation**: High (40–60%).
+
+**Full prompt description used by the script**:
+
+```
+ANALOG LIQUID (物理流体)
+Solid color base - choose ONE color only: vibrant orange (#FF6B00), Klein blue (#002FA7), or lime green (#00FF41).
+Physical liquid textures with metallic shimmer overlaying the solid base - gold dust flow, metallic mica powder
+suspended in liquid, iridescent pigments creating rainbow oil slick effects. Dry mineral textures like crushed
+gemstones. Macro photography of natural materials - copper oxidation, rust patterns, gold leaf fragments.
+Extreme grainy texture like thermal imaging or pushed film grain. Create maximum contrast between chaotic
+organic texture and ultra-clean sharp vector logo.
+```
+
+  </Accordion>
+  <Accordion title="led_matrix — LED Matrix (数字硬件)">
+
+**Concept**: Digital retro and pixel matrix.
+
+**Visual characteristics**:
+- Base: Black background with glowing dot matrix patterns
+- Noise: CRT display artifacts, halftone printing dots
+- Texture: Old-school LED billboard, retro computer displays
+- Atmosphere: Waves of glowing points creating depth; the logo floats as a solid entity above the matrix
+- Mood: Hardcore geek, cyberpunk, retro-futurism
+
+**Suitable for**: AI computing, Web3, data services, electronic hardware.
+
+**Saturation**: Medium (25–35%).
+
+**Full prompt description used by the script**:
+
+```
+LED MATRIX (数字硬件)
+Black background with glowing dot matrix patterns creating waves of light. Simulate old-school CRT displays,
+LED billboards, or halftone printing dots. Retro computer display artifacts with modern execution.
+Waves of glowing points creating depth, logo as solid entity floating above. Cyberpunk and retro-futurism
+aesthetics with hardcore geek appeal.
+```
+
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Light styles
+
+Light styles use a predominantly light background. Your logo is rendered in pure black for maximum contrast.
+
+<AccordionGroup>
+  <Accordion title="editorial — Editorial Paper (纸本编辑)">
+
+**Concept**: High-end specialty paper with extreme whitespace.
+
+**Visual characteristics**:
+- Base: Off-white, alabaster, or pearl white — not pure white
+- Noise: High-grade watercolor or rough art paper texture
+- Texture: Physical paper tactile quality suggestion
+- Atmosphere: Natural light diffuse reflection, slight warm gray vignette in corners
+- Mood: Humanistic, independent magazine aesthetic
+
+**Suitable for**: Humanistic brands, serious professional services.
+
+**Saturation**: Very low (5%).
+
+**Full prompt description used by the script**:
+
+```
+EDITORIAL PAPER (纸本编辑)
+Off-white, alabaster, or pearl white base (not pure white). High-grade watercolor or rough art paper
+texture suggesting physical paper tactile quality. Natural light diffuse reflection with slight warm
+gray vignette in corners. Humanistic, independent magazine aesthetic.
+```
+
+  </Accordion>
+  <Accordion title="iridescent — Iridescent Frost (幻彩透砂)">
+
+**Concept**: Minimal tech with optical material beauty.
+
+**Visual characteristics**:
+- Base: Extremely light silver-gray or cold white
+- Noise: Extremely fine micro noise simulating high-density frosted glass or sandblasted aluminum
+- Texture: Sandblasted aluminum surface quality
+- Atmosphere: Soft holographic/iridescent colors — faint light purple, light blue, or soft pink fluid diffused through thick frosted glass
+- Mood: Apple hardware render quality, lightweight, optical
+
+**Suitable for**: Tech products, hardware, scientific applications.
+
+**Saturation**: Medium (25%).
+
+**Full prompt description used by the script**:
+
+```
+IRIDESCENT FROST (幻彩透砂)
+Extremely light silver-gray or cold white base, creating calm, rational experimental space.
+Extremely fine micro noise, simulating high-density frosted glass or sandblasted aluminum surface.
+Restrained holographic/iridescent atmosphere light - faint low-saturation light purple, light blue
+or soft pink fluid diffused light in the clean background depth, like through thick frosted glass.
+```
+
+  </Accordion>
+  <Accordion title="morning — Morning Aura (晨雾光域)">
+
+**Concept**: AI softness with approachability.
+
+**Visual characteristics**:
+- Base: Warm ivory or extremely light cream color
+- Noise: Soft noise blending into the base like morning mist or dust
+- Texture: Thin layer of atmospheric haze
+- Atmosphere: Large area blurred low-saturation pastel colors (mint green, baby blue, dawn orange) dissolving into warm white
+- Mood: Warm, intelligent, pressure-free
+
+**Suitable for**: User-friendly AI products, accessible consumer products.
+
+**Saturation**: Low (15%).
+
+**Full prompt description used by the script**:
+
+```
+MORNING AURA (晨雾光域)
+Warm ivory or extremely light cream color base. Soft noise blending into base like morning mist or dust,
+creating thin layer of atmospheric haze. Large area blurred low-saturation pastel colors (mint green,
+baby blue, dawn orange) dissolving into warm white. Warm, intelligent, pressure-free atmosphere.
+```
+
+  </Accordion>
+  <Accordion title="clinical — Clinical Studio (无菌影棚)">
+
+**Concept**: Spatial order with high contrast.
+
+**Visual characteristics**:
+- Base: Pure white or extremely light cold gray
+- Noise: High-frequency sharp cold-toned digital micro noise with enhanced sharpness
+- Texture: Enhanced sharpness, sterile space quality
+- Atmosphere: Pure light/shadow structure — large softbox from top or side creating a smooth gray-white gradient
+- Mood: Sterile space, geometric order, 3D depth in a 2D presentation
+
+**Suitable for**: Algorithm-driven, data-centric, confident brands.
+
+**Saturation**: Minimal (2%).
+
+**Full prompt description used by the script**:
+
+```
+CLINICAL STUDIO (无菌影棚)
+Pure white or extremely light cold gray base. High-frequency sharp cold-toned digital micro noise with
+enhanced sharpness. Pure light/shadow structure - large softbox from top/side creating smooth gray-white
+gradient. Sterile space with geometric order, creating 3D depth in 2D presentation.
+```
+
+  </Accordion>
+  <Accordion title="ui_container — UI Container (容器化界面)">
+
+**Concept**: Digital product native feel with micro-depth.
+
+**Visual characteristics**:
+- Base: Clean gradient or solid color background
+- Noise: Minimal digital noise
+- Texture: Frosted glass container effect with rounded corners and subtle transparency — similar to an app icon base
+- Atmosphere: UI-native presentation with micro-shadows creating depth illusion
+- Mood: Interactive, product-ready, digital asset quality
+
+**Suitable for**: Digital products, apps, SaaS platforms, UI/UX-focused brands.
+
+**Saturation**: Low to medium (10–20%).
+
+**Full prompt description used by the script**:
+
+```
+UI CONTAINER (容器化界面)
+Clean gradient or solid color background with minimal digital noise. Frosted glass container effect
+(like app icon base) with rounded corners and subtle transparency. Micro-shadows creating depth illusion.
+UI-native presentation suggesting interactivity and digital product context. Logo sits in transparent
+container with modern interface design language.
+```
+
+  </Accordion>
+  <Accordion title="swiss_flat — Swiss Flat (瑞士扁平)">
+
+**Concept**: Absolute flatness and timeless authority.
+
+**Visual characteristics**:
+- Base: 100% pure solid color — deep vintage green, rich burgundy, or classic navy
+- Noise: None — absolute flatness
+- Texture: None — pure graphic design, zero tricks
+- Atmosphere: Zero gradients, zero effects — just perfect color and form
+- Mood: Extreme confidence, classic authority, environmental and sustainability associations
+
+**Suitable for**: Established brands, environmental or sustainable products, classic institutions.
+
+**Saturation**: High, but sophisticated — rich, deep colors only.
+
+**Full prompt description used by the script**:
+
+```
+SWISS FLAT (瑞士扁平)
+100% pure solid color background - deep vintage green, rich burgundy, or classic navy. Absolutely no
+gradients, no noise, no effects. Pure graphic design with zero tricks. Just perfect color and form.
+Extreme confidence and timeless authority. Classic Swiss International Style with absolute flatness.
+```
+
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Style selection by product type
+
+| Product category | Recommended styles |
+|---|---|
+| Infrastructure / security | `void`, `frosted` |
+| AI / data products | `fluid`, `morning`, `led_matrix` |
+| Design tools | `frosted`, `editorial`, `ui_container` |
+| Hardware / tech | `iridescent`, `clinical`, `led_matrix` |
+| Professional services | `spotlight`, `editorial` |
+| Creative / artistic | `analog_liquid` |
+| Digital products / SaaS | `ui_container`, `clinical` |
+| Environmental / classic brands | `swiss_flat`, `editorial` |
+
+## Style selection by mood
+
+| Mood | Recommended styles |
+|---|---|
+| Cold / rational | `void`, `clinical`, `iridescent`, `led_matrix` |
+| Warm / approachable | `morning`, `editorial`, `analog_liquid` |
+| Dynamic / fluid | `fluid`, `frosted`, `analog_liquid` |
+| Professional / editorial | `spotlight`, `editorial` |
+| Digital / interactive | `ui_container`, `led_matrix` |
+| Classic / timeless | `swiss_flat`, `editorial` |

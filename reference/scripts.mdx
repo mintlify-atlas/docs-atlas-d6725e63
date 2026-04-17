@@ -1,0 +1,174 @@
+---
+title: "Scripts: svg_to_png and generate_showcase CLI Reference"
+description: "Complete CLI reference for both Python scripts: svg_to_png.py converts SVG to PNG, and generate_showcase.py creates AI-powered showcase images."
+---
+
+The skill ships two Python scripts you run directly after Claude generates your SVG logos. `svg_to_png.py` handles the SVG-to-PNG conversion needed before showcase generation, and `generate_showcase.py` calls the Gemini API to produce 2K 16:9 showcase images in any of the 12 background styles.
+
+## svg_to_png.py
+
+Converts an SVG file to PNG at a configurable resolution. Uses `cairosvg` under the hood.
+
+```bash
+python scripts/svg_to_png.py <svg_file> [options]
+```
+
+### Arguments
+
+<ParamField path="svg_file" type="string" required>
+  Path to the input SVG file. The script exits with an error if the file does not exist.
+</ParamField>
+
+### Options
+
+<ParamField path="--output, -o" type="string">
+  Output PNG path. Defaults to the same path as the input with the extension changed to `.png`.
+</ParamField>
+
+<ParamField path="--width, -w" type="integer">
+  Output width in pixels. Defaults to `1024`.
+</ParamField>
+
+<ParamField path="--height, -H" type="integer">
+  Output height in pixels. Defaults to `1024`.
+</ParamField>
+
+### Examples
+
+<CodeGroup>
+```bash Default (1024×1024)
+python scripts/svg_to_png.py logo.svg
+```
+
+```bash Custom output path
+python scripts/svg_to_png.py logo.svg --output exports/logo.png
+```
+
+```bash Custom resolution
+python scripts/svg_to_png.py logo.svg --width 2048 --height 2048
+```
+</CodeGroup>
+
+### Python function
+
+```python scripts/svg_to_png.py
+def svg_to_png(svg_path: str, png_path: str, width: int = 1024, height: int = 1024) -> bool:
+    """
+    Convert SVG file to PNG.
+
+    Args:
+        svg_path: Path to input SVG file
+        png_path: Path to output PNG file
+        width: Output width in pixels
+        height: Output height in pixels
+
+    Returns:
+        True if successful, False otherwise
+    """
+```
+
+---
+
+## generate_showcase.py
+
+Generates high-end showcase images by sending your exported PNG to the Gemini image generation API (Nano Banana) with a detailed style prompt. Output is a 2K 16:9 PNG saved to the `output/` directory.
+
+```bash
+python scripts/generate_showcase.py <logo_name> <reference_image> [options]
+```
+
+<Note>
+  This script reads `GEMINI_API_KEY`, `GEMINI_API_BASE_URL`, and `GEMINI_MODEL` from a `.env` file in the current directory. See [Configuration](/reference/configuration) for setup details.
+</Note>
+
+### Arguments
+
+<ParamField path="logo_name" type="string" required>
+  Name of the logo or product. Used in the micro-typography overlay on the generated image (rendered as uppercase in the bottom-left corner).
+</ParamField>
+
+<ParamField path="reference_image" type="string" required>
+  Path to the reference logo PNG (exported from SVG using `svg_to_png.py`). The script encodes this as base64 and passes it to the Gemini API as a reference image.
+</ParamField>
+
+### Options
+
+<ParamField path="--style" type="string">
+  Background style key. Must be one of the 12 available styles. Defaults to `iridescent`.
+
+  Valid values: `void`, `frosted`, `fluid`, `spotlight`, `analog_liquid`, `led_matrix`, `editorial`, `iridescent`, `morning`, `clinical`, `ui_container`, `swiss_flat`
+</ParamField>
+
+<ParamField path="--output, -o" type="string">
+  Output file path. Defaults to `output/{logo_name}_{style}.png`. The `output/` directory is created automatically if it does not exist.
+</ParamField>
+
+<ParamField path="--description, -d" type="string">
+  Optional product description. Appears as micro-typography at the bottom center of the showcase image (rendered uppercase). Defaults to `DIGITAL IDENTITY SYSTEM` if omitted.
+</ParamField>
+
+<ParamField path="--all-styles" type="boolean">
+  Generate showcase images for all 12 background styles in sequence. Outputs one file per style to the `output/` directory.
+</ParamField>
+
+### Examples
+
+<CodeGroup>
+```bash Single style (default: iridescent)
+python scripts/generate_showcase.py "DataFlow" exports/logo.png
+```
+
+```bash Specific style
+python scripts/generate_showcase.py "DataFlow" exports/logo.png --style void
+```
+
+```bash With product description
+python scripts/generate_showcase.py "DataFlow" exports/logo.png \
+  --style fluid \
+  --description "AI data pipeline"
+```
+
+```bash Custom output path
+python scripts/generate_showcase.py "DataFlow" exports/logo.png \
+  --style editorial \
+  --output showcase/dataflow-editorial.png
+```
+
+```bash All 12 styles
+python scripts/generate_showcase.py "DataFlow" exports/logo.png --all-styles
+```
+</CodeGroup>
+
+### Python function
+
+```python scripts/generate_showcase.py
+def generate_showcase_image(
+    logo_name: str,
+    reference_image_path: str,
+    style: str,
+    output_path: str,
+    product_description: str = ""
+) -> bool:
+    """
+    Generate a showcase image using Nano Banana API.
+
+    Args:
+        logo_name: Name of the logo/product
+        reference_image_path: Path to the reference logo image (SVG exported as PNG)
+        style: Background style key (e.g. "void", "iridescent")
+        output_path: Path to save the generated image
+        product_description: Optional product description for context
+
+    Returns:
+        True if successful, False otherwise
+    """
+```
+
+### Logo color logic
+
+The script automatically selects logo color based on the background style to maximize contrast:
+
+- **Dark styles** (`void`, `frosted`, `fluid`, `spotlight`, `analog_liquid`, `led_matrix`) — logo rendered in pure white `#FFFFFF`
+- **Light styles** (`editorial`, `iridescent`, `morning`, `clinical`, `ui_container`, `swiss_flat`) — logo rendered in pure black `#000000`
+
+You do not need to configure this manually.

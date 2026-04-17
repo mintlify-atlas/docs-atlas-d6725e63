@@ -1,0 +1,140 @@
+---
+title: "How to Install the Logo Generator Skill for Claude Code"
+description: "Step-by-step instructions for all three installation methods — npx, git clone, and manual — plus Python dependency setup and Gemini API key configuration."
+---
+
+Logo Generator installs into Claude Code's skills directory as a folder containing `SKILL.md`, Python scripts, and reference documents. Once installed and restarted, Claude Code picks up the skill automatically and you can activate it with the `/logo-generator` command.
+
+## Choose an installation method
+
+<Tabs>
+  <Tab title="npx (recommended)">
+    The `npx skills add` command handles everything automatically: it clones the repository and places it in the correct Claude Code skills directory for your operating system.
+
+    ```bash
+    npx skills add https://github.com/op7418/logo-generator-skill.git
+    ```
+
+    After the command completes, continue to [post-installation setup](#post-installation-setup) below.
+  </Tab>
+  <Tab title="Git clone">
+    Clone the repository directly into the Claude Code skills directory.
+
+    ```bash
+    git clone https://github.com/op7418/logo-generator-skill.git ~/.claude/skills/logo-generator
+    ```
+
+    <Warning>
+      On Windows, replace `~/.claude/skills/` with `%USERPROFILE%\.claude\skills\`. The git clone destination should be `%USERPROFILE%\.claude\skills\logo-generator`.
+    </Warning>
+
+    After cloning, continue to [post-installation setup](#post-installation-setup) below.
+  </Tab>
+  <Tab title="Manual">
+    Use this method if you cannot use git or npx, or if you want to place the skill in a custom location.
+
+    <Steps>
+      <Step title="Download the repository">
+        Download the repository as a ZIP archive from GitHub and extract it to a temporary location.
+      </Step>
+      <Step title="Copy to the skills directory">
+        Copy the extracted `logo-generator` folder into your Claude Code skills directory:
+
+        - **macOS / Linux**: `~/.claude/skills/`
+        - **Windows**: `%USERPROFILE%\.claude\skills\`
+
+        The resulting path should be `~/.claude/skills/logo-generator/` (or the Windows equivalent).
+      </Step>
+      <Step title="Verify the folder structure">
+        Confirm the installed folder contains at minimum:
+
+        ```
+        logo-generator/
+        ├── SKILL.md
+        ├── README.md
+        ├── requirements.txt
+        ├── .env.example
+        ├── scripts/
+        │   ├── svg_to_png.py
+        │   └── generate_showcase.py
+        └── references/
+            ├── design_patterns.md
+            └── background_styles.md
+        ```
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Post-installation setup
+
+After installing by any method, complete these two steps before using the skill.
+
+### Install Python dependencies
+
+Navigate to the skill directory and install the required packages.
+
+```bash
+cd ~/.claude/skills/logo-generator
+pip install -r requirements.txt
+```
+
+The `requirements.txt` installs these four packages:
+
+| Package | Version | Purpose |
+|---|---|---|
+| `google-genai` | ≥ 0.2.0 | Gemini API client for showcase generation |
+| `python-dotenv` | ≥ 1.0.0 | Loads environment variables from `.env` |
+| `cairosvg` | ≥ 2.7.0 | Converts SVG files to PNG |
+| `Pillow` | ≥ 10.0.0 | Image processing for PNG exports |
+
+<Warning>
+  `cairosvg` requires the Cairo graphics library to be installed on your system. On macOS, run `brew install cairo` first. On Debian/Ubuntu Linux, run `sudo apt-get install libcairo2`. On Windows, follow the [cairo installation instructions](https://www.cairographics.org/download/) before running `pip install`.
+</Warning>
+
+### Configure your Gemini API key
+
+Copy the environment template and add your API key.
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` in your editor. The file looks like this:
+
+```env
+# Gemini API Configuration
+GEMINI_API_KEY=your_api_key_here
+
+# Optional: Use third-party API endpoint
+# Leave empty to use official Google API
+# Example: https://your-proxy.com/v1
+GEMINI_API_BASE_URL=
+
+# Model Configuration
+# Default: gemini-3.1-flash-image-preview (Nano Banana 2)
+GEMINI_MODEL=gemini-3.1-flash-image-preview
+```
+
+Replace `your_api_key_here` with your actual key. The other fields are optional:
+
+- **`GEMINI_API_BASE_URL`** — leave blank to use the official Google Gemini API. Set this only if you are routing through a third-party proxy endpoint (for example, `https://your-proxy.com/v1`).
+- **`GEMINI_MODEL`** — defaults to `gemini-3.1-flash-image-preview`. Change this only if you have access to a different model.
+
+<Note>
+  The Gemini API key is required only for Phase 4 showcase image generation. You can generate SVG logos, iterate on designs, and export PNGs without configuring `.env` at all.
+</Note>
+
+## Verify the installation
+
+Restart Claude Code to pick up the newly installed skill. In a new conversation, type:
+
+```
+/logo-generator
+```
+
+Claude Code should recognize the command and confirm that the Logo Generator skill is available. If the skill is not recognized, check that the folder is in the correct skills directory and that `SKILL.md` is present inside it.
+
+<Warning>
+  You must restart Claude Code after installation. The skills directory is scanned at startup; changes made while Claude Code is running are not detected automatically.
+</Warning>

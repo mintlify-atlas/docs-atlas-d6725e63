@@ -1,97 +1,80 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Logo Generator Skill: Professional SVG Logos with AI"
+description: "A Claude Code skill that generates professional SVG logos and high-end showcase images using proven design patterns and Gemini image generation."
 ---
 
-## Setting up
+Logo Generator is a Claude Code skill that turns a product description into a complete logo system — six or more distinct SVG variants, interactive HTML previews, and production-ready showcase images with professional background styles. The entire workflow runs inside Claude Code, from concept to final PNG delivery.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Install the skill in three ways: automatic via npx, git clone, or manual copy
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Generate your first logo in minutes with step-by-step instructions
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Workflow overview" icon="diagram-project" href="/guides/workflow">
+    Understand the five-phase process from information gathering to final delivery
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Background styles" icon="palette" href="/reference/background-styles">
+    Browse all 12 professional showcase backgrounds with visual descriptions
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## What you can build
 
-Everything you need to create world-class documentation.
+Logo Generator produces three types of output in a single session:
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+- **SVG logo variants** — 6+ distinct designs based on your product's name, industry, and core concept, rendered as clean, scalable SVG files
+- **Interactive HTML showcase** — a browser-ready page showing all variants side by side with hover effects and design rationale
+- **High-end showcase images** — AI-generated 2K (16:9) presentation images that place your logo against one of 12 curated backgrounds, from cinematic dark styles to clean editorial light styles
 
-## Need inspiration?
+<CardGroup cols={3}>
+  <Card title="Logo generation" icon="pen-nib" href="/guides/logo-generation">
+    Learn how variants are created and how to guide the design direction
+  </Card>
+  <Card title="Showcase generation" icon="image" href="/guides/showcase-generation">
+    Export SVGs to PNG and generate AI-powered showcase images
+  </Card>
+  <Card title="Iteration & refinement" icon="rotate" href="/guides/iteration">
+    Select favorites, combine elements, and refine until it is right
+  </Card>
+</CardGroup>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## Get started
+
+<Steps>
+  <Step title="Install the skill">
+    Run the automatic installer or clone the repository into your Claude Code skills directory.
+
+    ```bash
+    npx skills add https://github.com/op7418/logo-generator-skill.git
+    ```
+  </Step>
+  <Step title="Install Python dependencies">
+    Navigate to the skill directory and install the required packages.
+
+    ```bash
+    cd ~/.claude/skills/logo-generator
+    pip install -r requirements.txt
+    ```
+  </Step>
+  <Step title="Configure your Gemini API key">
+    Copy the environment template and add your key for showcase image generation.
+
+    ```bash
+    cp .env.example .env
+    # Edit .env and set GEMINI_API_KEY=your_key_here
+    ```
+  </Step>
+  <Step title="Start a logo project">
+    Restart Claude Code, then describe your product to begin.
+
+    ```
+    Generate a logo for my AI product called "DataFlow"
+    ```
+  </Step>
+</Steps>
+
+<Note>
+  The Gemini API key is only required for Phase 4 showcase image generation. SVG logo generation and interactive HTML previews work without it.
+</Note>

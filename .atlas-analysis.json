@@ -1,0 +1,65 @@
+{
+  "projectType": "ai-ml",
+  "projectName": "Logo Generator Skill",
+  "projectDescription": "A Claude Code skill that generates professional SVG logos and high-end showcase images using AI-powered design patterns and Gemini image generation.",
+  "theme": "palm",
+  "primaryColor": "#7C3AED",
+  "lightColor": "#EDE9FE",
+  "darkColor": "#4C1D95",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Using the Skill",
+            "pages": [
+              "guides/workflow",
+              "guides/logo-generation",
+              "guides/showcase-generation",
+              "guides/iteration"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/design-patterns",
+              "reference/background-styles",
+              "reference/scripts",
+              "reference/configuration"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Generate 6+ SVG logo variants from product description using proven design patterns",
+    "12 professional background styles for high-end showcase presentations",
+    "Gemini 3.1 Flash Image Preview (Nano Banana) integration for AI-powered showcase images",
+    "Interactive HTML showcase with hover effects and smooth transitions",
+    "SVG to PNG conversion with configurable resolution",
+    "Support for official Google Gemini API and custom third-party API endpoints",
+    "5-phase iterative workflow from concept to final delivery",
+    "WebGL dynamic background library for interactive presentations"
+  ],
+  "publicApiSurface": [
+    "/logo-generator (Claude Code skill command)",
+    "scripts/svg_to_png.py -- SVG to PNG converter CLI",
+    "scripts/generate_showcase.py -- Showcase image generator CLI",
+    "generate_showcase_image(logo_name, reference_image_path, style, output_path, product_description)",
+    "svg_to_png(svg_path, png_path, width, height)",
+    "BACKGROUND_STYLES dict (12 style keys: void, frosted, fluid, spotlight, analog_liquid, led_matrix, editorial, iridescent, morning, clinical, ui_container, swiss_flat)",
+    "GEMINI_API_KEY env var",
+    "GEMINI_API_BASE_URL env var",
+    "GEMINI_MODEL env var"
+  ]
+}

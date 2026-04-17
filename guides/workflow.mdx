@@ -1,0 +1,131 @@
+---
+title: "Logo Generator five-phase workflow explained"
+description: "A complete reference for every phase of the Logo Generator process — from gathering product context through SVG generation, iteration, and final showcase delivery."
+---
+
+The Logo Generator skill structures every project into five sequential phases. Understanding all five phases helps you prepare good input upfront, know what to expect at each stage, and move efficiently from a blank canvas to a polished set of deliverables. You do not need to manage the phases manually — Claude tracks progress and advances automatically — but knowing the shape of the process makes each phase more productive.
+
+<Tip>
+  The quality of Phase 2 output is directly proportional to the specificity of your Phase 1 brief. Vague inputs like "make it look professional" produce generic results. Specific inputs like "security infrastructure tool, monochrome, convey mathematical precision and layered protection" give Claude concrete design constraints to work from.
+</Tip>
+
+<Steps>
+  <Step title="Phase 1: information gathering">
+    Claude asks a small set of concise questions before generating anything. The answers shape every design decision downstream.
+
+    **Required information:**
+
+    - **Product / brand name** — The name the logo will represent
+    - **Industry / category** — For example: AI infrastructure, fintech, developer tooling, design tools, healthcare
+    - **Core concept** — The single idea the logo should communicate, such as: connection, flow, security, simplicity, growth, precision
+    - **Design preferences** — Broken into three sub-dimensions:
+      - *Style*: minimal vs. complex, geometric vs. organic
+      - *Color*: monochrome vs. a specific palette
+      - *Mood*: cold/technical vs. warm/approachable, professional vs. friendly
+
+    Claude asks these questions concisely and does not ask for more than it needs. If you volunteer extra context — such as competitors to differentiate from, or specific logos you admire — Claude incorporates it.
+
+    A typical exchange:
+
+    ```
+    Claude: What industry or category does your product belong to?
+    You:    Blockchain security — smart contract auditing
+
+    Claude: What core concept should the logo communicate?
+    You:    Layered protection, mathematical certainty, zero ambiguity
+
+    Claude: Any style or color preferences?
+    You:    Monochrome, precise geometry, cold mood — no organic shapes
+    ```
+  </Step>
+
+  <Step title="Phase 2: pattern matching and SVG generation">
+    Using your brief, Claude generates at least six distinct SVG logo variants. This phase produces three concrete outputs.
+
+    **Six or more design variants**
+
+    Each variant is drawn from the design patterns in `references/design_patterns.md`, matched to your product's characteristics. The variants cover different pattern types so you are evaluating genuinely different directions, not minor tweaks of one idea:
+
+    - Pure geometric (clean shapes, no dots or lines)
+    - Dot matrix (circle rings, rounded rectangles, capsules, or hexagons)
+    - Line system (parallel lines, waves, spirals)
+    - Mixed: dots filling or forming a geometric shape
+    - Mixed: lines creating or accenting geometric forms
+    - Node network or layered composition
+
+    Every variant uses `viewBox="0 0 100 100"` for consistent scaling, `currentColor` for color flexibility, and `<defs>` / `<g>` for clean structure.
+
+    **Design rationale**
+
+    For each variant, Claude explains why the chosen pattern maps to your product concept. This makes it easy to evaluate designs on intent, not just visual preference.
+
+    **Interactive HTML showcase**
+
+    After the SVG variants, Claude generates an interactive HTML showcase page using the template from `assets/showcase_template.html`. Open it in any browser to compare all variants side-by-side with hover effects and smooth transitions.
+  </Step>
+
+  <Step title="Phase 3: iteration and refinement">
+    Phase 3 is a feedback loop. You narrow from six or more variants to two or three favorites, then refine those with targeted adjustments.
+
+    **Types of adjustments you can request:**
+
+    - Select favorites: `I like variants 2 and 5`
+    - Adjust parameters: `Increase the stroke weight on variant 2` or `Rotate the outer ring 15 degrees`
+    - Combine elements: `Take the dot cluster from variant 3 and place it inside the circle from variant 5`
+    - Change colors or add gradients: `Add a subtle gradient from the center outward`
+    - Modify animations: `Add a slow rotation to the outer ring for web display`
+    - Explore new directions: `Generate two more variants that focus only on the node network pattern`
+
+    Claude makes targeted adjustments and does not regenerate the entire set unless you ask. Iterate until you have a design ready for professional presentation.
+
+    See the [iteration guide](/guides/iteration) for specific feedback prompts and techniques.
+  </Step>
+
+  <Step title="Phase 4: high-end showcase generation">
+    Once you have selected a preferred logo direction, Claude moves into showcase production. This phase has four sub-steps.
+
+    **1. Export SVG to PNG**
+
+    Claude runs `scripts/svg_to_png.py` to convert your selected SVG to a 1024×1024px PNG with a transparent background. This PNG becomes the reference image for Gemini.
+
+    **2. Select showcase styles**
+
+    Claude reviews `references/background_styles.md` and recommends four background styles based on your product type and mood. For each style, Claude explains why it fits — for example, recommending **Fluid Abyss** for an AI product because its deep purple and fluid fusion atmosphere reinforces computational dynamism.
+
+    **3. Generate showcase images**
+
+    Claude runs `scripts/generate_showcase.py` using your PNG as a reference image. The script sends the PNG and a detailed style prompt to the Gemini image generation API (Nano Banana), which produces a 16:9 2K-resolution showcase image for each selected style. Each image places your logo at the visual center with professional micro-typography and generous negative space.
+
+    **4. Create the final presentation webpage**
+
+    Claude assembles a final presentation webpage combining the SVG variants and the generated showcase images, formatted with a professional layout and download links for all assets.
+
+    See the [showcase generation guide](/guides/showcase-generation) for full CLI usage and configuration.
+  </Step>
+
+  <Step title="Phase 5: delivery">
+    Phase 5 is the handoff. Claude delivers a complete set of production-ready assets:
+
+    - **Interactive HTML showcase page** — all SVG variants with hover effects and transitions, suitable for sharing with stakeholders or embedding in a README
+    - **SVG files** — editable vector source for each variant; scale to any size without quality loss
+    - **PNG exports** — transparent-background rasters at 1024×1024px (or a custom size you requested)
+    - **Showcase images** — four AI-generated presentation images with your logo on professional backgrounds, delivered as 16:9 2K-resolution files, ready for landing pages, pitch decks, and press kits
+  </Step>
+</Steps>
+
+## Explore each phase in detail
+
+<CardGroup cols={2}>
+  <Card title="Logo generation" icon="pen-nib" href="/guides/logo-generation">
+    How SVG variants are generated from design patterns, the six design principles, and how to guide Claude toward a specific visual direction.
+  </Card>
+  <Card title="Iteration and refinement" icon="arrows-rotate" href="/guides/iteration">
+    How to narrow variants, adjust parameters, combine elements, and give feedback that produces the result you want.
+  </Card>
+  <Card title="Showcase generation" icon="image" href="/guides/showcase-generation">
+    Step-by-step walkthrough of the Python scripts, all CLI flags, the Gemini prompt structure, and the 16:9 2K output format.
+  </Card>
+  <Card title="Background styles reference" icon="palette" href="/reference/background-styles">
+    All 12 background styles with visual characteristics and product-type recommendations.
+  </Card>
+</CardGroup>

@@ -1,0 +1,216 @@
+---
+title: "Iterate and refine your logo variants in Phase 3"
+description: "How to narrow six variants to a final direction, what types of adjustments are available, when to keep iterating versus moving to showcase generation."
+---
+
+Phase 3 is where most of the design work happens. Claude generates at least six variants in Phase 2, but you will rarely want all of them — the goal is to identify the one or two directions that resonate and refine them until the design is exactly right. This page covers how to narrow variants, what kinds of adjustments are possible, how to give feedback that gets results, and when the design is ready to move forward.
+
+## Narrowing from six variants to two or three
+
+Start by identifying which variants are closest to what you want, not which ones are perfect. You are choosing directions to develop, not a finished logo.
+
+Evaluate variants along two dimensions:
+
+- **Concept fit** — does the visual language connect to your product's core concept? A node network pattern fits "connection" better than a spiral fits "connection."
+- **Aesthetic fit** — does the style match your intended mood? A dense dot matrix reads as technical and data-heavy; a single arc with a dot accent reads as minimal and precise.
+
+Tell Claude which variants to keep working on:
+
+```
+I want to develop variants 2 and 5. Set the others aside.
+```
+
+Claude focuses all subsequent adjustments on those variants and does not regenerate the full set unless you ask.
+
+<Note>
+  If none of the six variants are close to what you want, that usually means the Phase 1 brief was too vague. It is more efficient to restart with a more specific brief than to iterate indefinitely on the wrong direction. Try adding concrete constraints: a specific pattern type, a stroke weight range, or an explicit reference to one of the design principles.
+</Note>
+
+## Types of refinements
+
+<Tabs>
+  <Tab title="Parameter adjustments">
+    Parameter adjustments change specific numeric or structural properties of an existing design. They are the most precise type of feedback and produce the most predictable results.
+
+    **Size and scale:**
+
+    ```
+    Increase the central node radius from 5 to 8.
+    ```
+
+    ```
+    The outer ring feels too close to the edge — increase its radius
+    from 35 to 30 so there is more breathing space.
+    ```
+
+    **Stroke weight:**
+
+    ```
+    The primary path looks too thin at small sizes.
+    Increase stroke-width from 1.5 to 3.
+    ```
+
+    ```
+    Reduce the secondary connection lines from stroke-width 2 to 1.5
+    so they read as background elements rather than primary structure.
+    ```
+
+    **Spacing:**
+
+    ```
+    The dots in the inner ring are too close together.
+    Increase the ring radius from 12 to 18 units.
+    ```
+
+    **Rotation:**
+
+    ```
+    Rotate the outer polygon 22.5 degrees clockwise.
+    ```
+
+    ```
+    Rotate the entire composition 15 degrees counterclockwise —
+    I want to avoid the perfectly vertical orientation.
+    ```
+
+    **Opacity and hierarchy:**
+
+    ```
+    The secondary nodes are too prominent.
+    Reduce their opacity from 0.6 to 0.3.
+    ```
+  </Tab>
+
+  <Tab title="Combining elements">
+    Combination requests take elements from different variants and merge them into a new design. Be specific about which element comes from which variant.
+
+    **Taking a shape from one variant and applying it to another:**
+
+    ```
+    Take the concentric dot ring from variant 2 and use it as the
+    background layer for variant 5's central node network.
+    ```
+
+    **Replacing a pattern type while keeping proportions:**
+
+    ```
+    Keep the overall scale and negative space from variant 3,
+    but replace the line system with the capsule dot pattern
+    from variant 6. Same layout, different texture.
+    ```
+
+    **Adding an accent element:**
+
+    ```
+    Variant 4 is almost right. Add a single small dot accent
+    at the top of the central circle — similar to the one in variant 1.
+    ```
+
+    **Adjusting the composition while preserving the pattern:**
+
+    ```
+    Variant 2 has the right pattern but the composition is too centered.
+    Shift the entire cluster 8 units to the left and slightly down
+    to create more asymmetry, like the balance in variant 5.
+    ```
+
+    <Note>
+      Claude makes targeted changes. If you ask to combine elements from two variants, it modifies only those elements — it does not redesign the entire logo. If the result introduces unexpected changes, describe specifically what changed and ask Claude to revert that part.
+    </Note>
+  </Tab>
+
+  <Tab title="Color and effects">
+    The base design uses `currentColor` throughout, which means the logo inherits color from its CSS context. Most color changes for web display are handled at the container level. For specific SVG-level color changes, or to add gradients and animations, ask directly.
+
+    **Adding a gradient:**
+
+    ```
+    Add a radial gradient from the center outward —
+    full opacity at center, 30% opacity at the edges.
+    ```
+
+    ```
+    Replace the solid fill on the primary nodes with a linear gradient
+    from currentColor at 100% opacity to currentColor at 60% opacity,
+    top to bottom.
+    ```
+
+    **Using opacity for multi-tone effects (without breaking currentColor):**
+
+    ```
+    The outer ring should feel like a secondary element.
+    Reduce its opacity to 0.4 — keep it currentColor,
+    just lighter.
+    ```
+
+    **Adding animation for web display:**
+
+    ```
+    Add a slow continuous rotation to the outer dot ring —
+    one full rotation every 20 seconds, rotating around
+    the center point (50, 50).
+    ```
+
+    ```
+    Add a breathing effect to the center node — pulse between
+    0.4 and 1.0 opacity over 3 seconds, looping indefinitely.
+    ```
+
+    **Removing effects:**
+
+    ```
+    Remove the animation. I need a static SVG for print use.
+    ```
+  </Tab>
+</Tabs>
+
+## How to give feedback that works
+
+The most common source of iteration frustration is feedback that is too abstract. Claude is very good at making specific changes; it is less good at inferring intent from evaluative language.
+
+**Describe the change, not the feeling:**
+
+| Instead of | Say |
+|---|---|
+| "Make it look more premium" | "Reduce the element count to just the central shape and increase stroke-width to 3.5" |
+| "It feels too busy" | "Remove the secondary dot grid — keep only the primary nodes and connecting paths" |
+| "Make it more dynamic" | "Rotate the outer arc 30 degrees and shift the central node 5 units off-center" |
+| "Make it better" | "The proportions feel off — the center node is too small relative to the outer ring. Increase the center node radius from 4 to 7" |
+
+**Reference specific elements by name:**
+
+Instead of "change the circular thing", say "change the outer ring" or "change the central filled circle". If the SVG uses `<g>` groups, reference the group by its function: "the background dot grid", "the primary connection path", "the accent node at the apex".
+
+**Provide before-and-after specifics when you know them:**
+
+```
+The stroke-width on the main paths is currently 2. Increase it to 3.5.
+```
+
+```
+The outer ring radius is currently 35. Reduce it to 28 to add more
+breathing space between it and the canvas edge.
+```
+
+## When to move to Phase 4
+
+Move to showcase generation when:
+
+- You have a variant you would be comfortable presenting to a client or stakeholder
+- The core shape and proportions feel resolved — you are not uncertain about the fundamental structure
+- Any remaining changes are stylistic ("slightly heavier weight") rather than conceptual ("completely different pattern")
+
+Do not wait for perfection. The showcase images often reveal whether a design works at presentation scale, and seeing the logo in a professional context sometimes resolves remaining uncertainty faster than further iteration in the SVG viewer.
+
+<Tip>
+  If you are uncertain between two refined variants, generate showcase images for both and compare them in context. The background styles can amplify or diminish certain qualities of the logo — a design that feels too delicate in isolation can look exactly right on a dark `void` background. Make the call after seeing both at presentation scale.
+</Tip>
+
+To move forward, tell Claude which variant you have settled on:
+
+```
+I'm happy with variant 2 as refined. Let's move to Phase 4 —
+generate showcase images with the frosted and fluid styles.
+```
+
+Claude will then run the SVG-to-PNG export and begin generating showcase images. See the [showcase generation guide](/guides/showcase-generation) for what happens next.

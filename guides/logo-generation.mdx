@@ -1,0 +1,202 @@
+---
+title: "How SVG logo variants are generated and designed"
+description: "Learn SVG pattern types, the eight non-negotiable design principles, and how to steer Claude toward a specific aesthetic using precise language."
+---
+
+When you complete Phase 1, Claude does not simply produce random shapes. It matches your product description against a library of proven SVG patterns, applies a strict set of design principles, and generates at least six variants that are deliberately different from one another. Understanding this process lets you evaluate variants with intention and give feedback that produces better results.
+
+## The three core SVG pattern types
+
+The skill's design system is built on three foundational SVG patterns. More complex variants combine these patterns, but every design traces back to at least one of them.
+
+### Dot matrix and concentric circles
+
+Dot matrix patterns use discrete circles or rounded shapes arranged in grids, rings, or curves. The concentric ring layout — dots radiating outward from an empty center — is the most expressive form. The vacant center creates visual tension between presence and absence, and the decreasing dot size on outer rings suggests depth.
+
+```svg
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <g fill="currentColor">
+    <!-- Ring 1: 6 dots at radius 15 from center, dot size 3 -->
+    <circle cx="50" cy="35" r="3"/>
+    <circle cx="62.99" cy="42.5" r="3"/>
+    <circle cx="62.99" cy="57.5" r="3"/>
+    <circle cx="50" cy="65" r="3"/>
+    <circle cx="37.01" cy="57.5" r="3"/>
+    <circle cx="37.01" cy="42.5" r="3"/>
+
+    <!-- Ring 2: 12 dots at radius 25 from center, dot size 2.5 -->
+    <circle cx="50" cy="25" r="2.5"/>
+    <circle cx="62.5" cy="28.35" r="2.5"/>
+    <circle cx="71.65" cy="37.5" r="2.5"/>
+    <circle cx="75" cy="50" r="2.5"/>
+    <circle cx="71.65" cy="62.5" r="2.5"/>
+    <circle cx="62.5" cy="71.65" r="2.5"/>
+    <circle cx="50" cy="75" r="2.5"/>
+    <circle cx="37.5" cy="71.65" r="2.5"/>
+    <circle cx="28.35" cy="62.5" r="2.5"/>
+    <circle cx="25" cy="50" r="2.5"/>
+    <circle cx="28.35" cy="37.5" r="2.5"/>
+    <circle cx="37.5" cy="28.35" r="2.5"/>
+  </g>
+</svg>
+```
+
+**Best suited for**: AI products, data platforms, origin or source concepts, scientific tools.
+
+### Geometric shapes with line accents
+
+This pattern combines a geometric primary shape — a polygon, arc, or circle — with a secondary line or dot accent. The geometric form provides structure and stability; the accent creates a focal point and conveys precision. A triangle with a highlighted apex node, for example, communicates direction and decisiveness.
+
+```svg
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="50,30 70,60 30,60"
+           fill="none" stroke="currentColor" stroke-width="2"/>
+  <circle cx="50" cy="30" r="4" fill="currentColor"/>
+</svg>
+```
+
+For more complex variants, multiple stacked shapes with varying stroke widths create layered depth:
+
+```svg
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" stroke="currentColor">
+    <circle cx="50" cy="50" r="35" stroke-width="2"/>
+    <circle cx="50" cy="50" r="25" stroke-width="1.5"/>
+    <circle cx="50" cy="50" r="15" stroke-width="1"/>
+    <!-- Accent: filled center dot -->
+    <circle cx="50" cy="50" r="4" fill="currentColor" stroke="none"/>
+  </g>
+</svg>
+```
+
+**Best suited for**: Security, stability, layered systems, precision tools, frameworks.
+
+### Node networks
+
+Node network patterns represent connections between entities. Nodes of varying sizes convey hierarchy; curved paths between them add elegance and suggest organic flow rather than rigid structure. Secondary nodes at reduced opacity hint at the broader system without competing with the primary focal point.
+
+```svg
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- Curved connections -->
+    <path d="M 30 70 Q 50 70, 50 50"
+          stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M 50 50 Q 50 30, 70 30"
+          stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M 30 70 Q 20 40, 35 35"
+          stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+    <path d="M 35 35 Q 50 35, 50 50"
+          stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+
+    <!-- Primary nodes -->
+    <circle cx="30" cy="70" r="5" fill="currentColor"/>
+    <circle cx="50" cy="50" r="6" fill="currentColor"/>
+    <circle cx="70" cy="30" r="5" fill="currentColor"/>
+
+    <!-- Secondary nodes -->
+    <circle cx="35" cy="35" r="2.5" fill="currentColor" opacity="0.4"/>
+    <circle cx="65" cy="55" r="2"   fill="currentColor" opacity="0.3"/>
+  </g>
+</svg>
+```
+
+**Best suited for**: Agent frameworks, network infrastructure, graph databases, API gateways, social platforms.
+
+## SVG technical best practices
+
+Every generated SVG follows the same technical conventions so logos are consistent, flexible, and easy to edit.
+
+| Convention | Why it matters |
+|---|---|
+| `viewBox="0 0 100 100"` | Coordinates become intuitive — positions are effectively percentages. Logos scale perfectly to any size. |
+| `currentColor` for fills and strokes | The parent container's CSS `color` property controls the logo color. No hardcoded hex values. |
+| `<defs>` for reusable elements | Repeated shapes (dots in a ring, hexagons in a grid) are defined once and referenced with `<use>`, keeping code clean. |
+| `<clipPath>` for masking | Lines or dot grids clipped to a circular or geometric boundary create complex forms without complex paths. |
+| `<g>` semantic grouping | Related elements are grouped so the structure mirrors design intent — background layer, primary shape, accent. |
+
+## The eight design principles
+
+These principles are applied to every variant before it is shown to you. They are derived from analysis of high-end brand identity systems and are non-negotiable constraints, not stylistic preferences.
+
+<AccordionGroup>
+  <Accordion title="1. Extreme simplicity">
+    Each logo has one to two core elements at most. A single thick circle, two merging nodes, or a dot ring around a void center — not fifteen hexagons in a grid.
+
+    Simplicity creates memorability. A logo that works as a 16×16px favicon and a 512×512px icon has fewer elements competing for attention at small sizes.
+  </Accordion>
+
+  <Accordion title="2. Generous negative space">
+    At least 40–50% of the canvas is intentionally empty. Negative space is not wasted canvas — it is part of the design. Empty space around a central element creates breathing room and draws the eye to what is there.
+
+    Elements are kept at least 10–15 units from canvas edges, and at least 8–12 units apart from each other.
+  </Accordion>
+
+  <Accordion title="3. Precise proportions">
+    Line weights for primary elements are 2.5–4px in `viewBox="0 0 100 100"` coordinates. A stroke width below 2.5 looks fragile; above 4 looks clumsy. Dot radii are 2–8px. Spacing between elements is at least 8–12px.
+
+    These are specific numbers, not ranges to guess at. Precision signals craftsmanship.
+  </Accordion>
+
+  <Accordion title="4. Visual tension through asymmetry">
+    Perfect symmetry is static. Intentional asymmetry — a dot cluster weighted to the bottom-left, a path that trails off to one side — creates dynamic energy and visual interest.
+
+    Every composition introduces some degree of intentional imbalance. If a design looks like a diagram, it lacks tension.
+  </Accordion>
+
+  <Accordion title="5. Restraint over decoration">
+    Every element must justify its existence. No gradients, shadows, or multiple colors added for their own sake. Pure monochrome with no effects is the baseline. Additional elements are added only when they carry meaning.
+
+    Restraint signals confidence. Decoration signals uncertainty.
+  </Accordion>
+
+  <Accordion title="6. Single focal point">
+    The eye must know immediately where to look. One dominant element — a large filled circle, the central node, the apex of a triangle — carries the visual weight. All other elements are secondary.
+
+    Multiple competing elements of equal visual weight produce confusion, not complexity.
+  </Accordion>
+
+  <Accordion title="7. Structural stability">
+    Logos must have visual weight and structural integrity. Two or three thin lines (stroke-width below 2.5) with no solid mass feel fragile and weak. Use dense line systems with six or more lines, solid shapes, or thick strokes (3–4) to create visual mass.
+
+    If using a line system, dense repetition creates the mass that isolated elements cannot. The logo must feel grounded when scaled down to favicon size.
+  </Accordion>
+
+  <Accordion title="8. Rounded negative space cuts">
+    When using negative space as a design element — cutouts, perforations, or subtractive shapes — the openings must have rounded edges. Sharp corners or pointed edges on cutout areas feel harsh and unfinished. Circular or rounded-rectangle cutouts with smooth edges read as intentional and refined.
+  </Accordion>
+</AccordionGroup>
+
+## Guiding Claude toward your preferred aesthetic
+
+Claude responds to specific design language. Vague direction ("make it look modern") leaves too much open. Specific direction ("increase the stroke weight to 3.5 and tighten the spacing between rings to 8 units") produces exactly what you describe.
+
+**Vocabulary that works:**
+
+- Reference pattern types directly: "dot matrix", "node network", "concentric rings", "line system"
+- Reference proportions: "stroke-width 3", "dot radius 4", "15 units spacing"
+- Reference the design principles: "more negative space", "reduce to a single focal point", "add asymmetry"
+- Reference mood: "colder", "more mechanical", "less organic"
+- Reference specific elements: "the outer arc", "the center node", "the diagonal accent line"
+
+**Examples of effective prompts:**
+
+```
+Make the primary node larger — increase its radius from 5 to 8.
+```
+
+```
+The design feels too symmetric. Shift the dot cluster 5 units to the left
+and remove two dots from the upper right to create visual tension.
+```
+
+```
+Replace the line system with a concentric ring dot pattern.
+Keep the same overall proportion and negative space.
+```
+
+```
+This reads as decorative. Strip it back to the single most
+important shape and leave everything else out.
+```
+
+When you reference a specific variant by number and describe the exact change you want, Claude makes a targeted adjustment rather than regenerating the entire set.

@@ -1,0 +1,115 @@
+---
+title: "Configuration: Environment Variables and Dependencies"
+description: "All environment variables, Python dependencies, and system requirements for the Logo Generator Skill. Includes a troubleshooting guide for common errors."
+---
+
+The skill is configured through a `.env` file in the skill directory and three environment variables. Python dependencies are listed in `requirements.txt` and installed with pip. The Gemini API key is the only external credential required.
+
+## Environment variables
+
+Copy the template file before editing:
+
+```bash
+cp .env.example .env
+```
+
+```env .env
+# Gemini API Configuration
+GEMINI_API_KEY=your_api_key_here
+
+# Optional: Use third-party API endpoint
+# Leave empty to use official Google API
+# Example: https://your-proxy.com/v1
+GEMINI_API_BASE_URL=
+
+# Model Configuration
+# Default: gemini-3.1-flash-image-preview (Nano Banana 2)
+GEMINI_MODEL=gemini-3.1-flash-image-preview
+```
+
+<ParamField path="GEMINI_API_KEY" type="string" required>
+  Your Google Gemini API key. Required for Phase 4 showcase image generation. Get a key at [Google AI Studio](https://aistudio.google.com/). SVG logo generation works without this key — only the `generate_showcase.py` script needs it.
+</ParamField>
+
+<ParamField path="GEMINI_API_BASE_URL" type="string">
+  Optional custom API endpoint for third-party Gemini-compatible providers. Leave empty to use the official Google API. Must be a full base URL, for example `https://your-proxy.com/v1`. When set, the script passes it as `http_options.api_endpoint` to the `genai.Client`.
+</ParamField>
+
+<ParamField path="GEMINI_MODEL" type="string">
+  Gemini model identifier. Defaults to `gemini-3.1-flash-image-preview`, which is the Nano Banana model used for high-end showcase image generation. Only change this if you are using a provider that uses a different model name.
+</ParamField>
+
+## Python dependencies
+
+Install all dependencies with:
+
+```bash
+pip install -r requirements.txt
+```
+
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `google-genai` | `>=0.2.0` | Gemini API client for image generation |
+| `python-dotenv` | `>=1.0.0` | Loads `.env` file into environment variables |
+| `cairosvg` | `>=2.7.0` | Converts SVG files to PNG |
+| `Pillow` | `>=10.0.0` | Saves generated images to disk |
+
+<Warning>
+  `cairosvg` requires the Cairo system library. On macOS, install it with `brew install cairo`. On Debian/Ubuntu, use `apt-get install libcairo2`. On Windows, download the GTK runtime from the Cairo project page.
+</Warning>
+
+**System requirement:** Python 3.8 or later.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="SVG not displaying correctly in the browser">
+    Check that all paths in your SVG are closed and that the `viewBox` attribute is set to `0 0 100 100`. The skill's SVG templates use this viewBox for consistent scaling. Missing closing tags on `<path>` elements are the most common cause.
+  </Accordion>
+
+  <Accordion title="PNG export fails: cairosvg error">
+    Verify `cairosvg` is installed and the system Cairo library is present:
+
+    ```bash
+    pip install cairosvg
+    # macOS
+    brew install cairo
+    # Ubuntu/Debian
+    sudo apt-get install libcairo2
+    ```
+
+    Then re-run the export command.
+  </Accordion>
+
+  <Accordion title="Showcase generation fails: GEMINI_API_KEY error">
+    The `.env` file must exist in the directory where you run the script, and `GEMINI_API_KEY` must be set to a valid key. Check:
+
+    ```bash
+    cat ~/.claude/skills/logo-generator/.env
+    ```
+
+    If the file is missing or the key is empty, copy the template and add your key:
+
+    ```bash
+    cp .env.example .env
+    # Edit .env and set GEMINI_API_KEY=your_actual_key
+    ```
+  </Accordion>
+
+  <Accordion title="Showcase generation fails: reference image not found">
+    The `generate_showcase.py` script requires the reference image to exist at the path you provide. Run `svg_to_png.py` first to export your selected SVG, then pass the resulting `.png` path to `generate_showcase.py`:
+
+    ```bash
+    python scripts/svg_to_png.py my-logo.svg --output exports/my-logo.png
+    python scripts/generate_showcase.py "MyProduct" exports/my-logo.png --style void
+    ```
+  </Accordion>
+
+  <Accordion title="API quota or rate limit errors">
+    The Gemini free tier has generation limits. If you hit quota errors when running `--all-styles`, generate styles individually with a short pause between calls, or upgrade your Google AI Studio plan.
+  </Accordion>
+
+  <Accordion title="Third-party API endpoint not working">
+    Ensure `GEMINI_API_BASE_URL` is a complete base URL without a trailing slash and without a path suffix. For example: `https://your-proxy.com/v1` is correct. The `google-genai` client appends its own path segments automatically.
+  </Accordion>
+</AccordionGroup>
